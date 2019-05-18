@@ -59,6 +59,8 @@
 		7B4EAF3F228BB0F900B3EA00 /* MovieModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4EAF3E228BB0F900B3EA00 /* MovieModelProtocol.swift */; };
 		7B8DA56E228D5EE200FFE552 /* ObservableType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8DA56D228D5EE200FFE552 /* ObservableType+Extensions.swift */; };
 		7BA06C8D228DA3B100EAA8F6 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA06C8C228DA3B100EAA8F6 /* Task.swift */; };
+		7BA06C8F228FE4B300EAA8F6 /* PaginationNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA06C8E228FE4B300EAA8F6 /* PaginationNetworkModel.swift */; };
+		7BA06C91228FF3EC00EAA8F6 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA06C90228FF3EC00EAA8F6 /* UITableView+Extensions.swift */; };
 		EE5E3774671855CD4E3983D1 /* Pods_TestTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1D4BD3EC94F5CCE01641C5 /* Pods_TestTask.framework */; };
 /* End PBXBuildFile section */
 
@@ -119,6 +121,8 @@
 		7B4EAF3E228BB0F900B3EA00 /* MovieModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieModelProtocol.swift; sourceTree = "<group>"; };
 		7B8DA56D228D5EE200FFE552 /* ObservableType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+Extensions.swift"; sourceTree = "<group>"; };
 		7BA06C8C228DA3B100EAA8F6 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		7BA06C8E228FE4B300EAA8F6 /* PaginationNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationNetworkModel.swift; sourceTree = "<group>"; };
+		7BA06C90228FF3EC00EAA8F6 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		B38B1D1113C2B35C96F2EECD /* Pods-TestTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestTask.debug.xcconfig"; path = "Target Support Files/Pods-TestTask/Pods-TestTask.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -230,6 +234,7 @@
 				7B4EAEC7228B01AA00B3EA00 /* NetworkContext.swift */,
 				7B4EAECB228B03E100B3EA00 /* NetworkAdapter.swift */,
 				7B4EAEDB228B0BF800B3EA00 /* NetworkService.swift */,
+				7BA06C8E228FE4B300EAA8F6 /* PaginationNetworkModel.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -325,6 +330,7 @@
 			children = (
 				7B4EAF03228B389C00B3EA00 /* String+Extensions.swift */,
 				7B8DA56D228D5EE200FFE552 /* ObservableType+Extensions.swift */,
+				7BA06C90228FF3EC00EAA8F6 /* UITableView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -597,6 +603,8 @@
 				7B4EAF2B228B55D600B3EA00 /* FavouritesService.swift in Sources */,
 				7B4EAF1B228B466F00B3EA00 /* SearchResultPresenter.swift in Sources */,
 				7B4EAF12228B41B600B3EA00 /* SearchResultViewController.swift in Sources */,
+				7BA06C91228FF3EC00EAA8F6 /* UITableView+Extensions.swift in Sources */,
+				7BA06C8F228FE4B300EAA8F6 /* PaginationNetworkModel.swift in Sources */,
 				7B4EAEC6228AC83600B3EA00 /* API.swift in Sources */,
 				7B4EAEFF228B2A4600B3EA00 /* MovieTVCell.swift in Sources */,
 				7B4EAEC3228AB51D00B3EA00 /* Movie.swift in Sources */,

@@ -12,7 +12,7 @@ import RxCocoa
 
 class PopularMoviesViewController: BaseViewController {
     
-    lazy var presenter = PopularMoviesPresenter(view: self)
+    let paginationModel = PopularPaginationModel()
     let disposeBag = DisposeBag()
     
     private let searchController = UISearchController(searchResultsController: nil)
@@ -30,45 +30,35 @@ class PopularMoviesViewController: BaseViewController {
         setupViews()
         spinnerFooterView.showSpinner()
         
-        // without rx
-        // presenter.loadMoviesAt(page: page)
+        paginationModel.elements.asObservable().bind(
+            to: tableView.rx.items(
+                cellIdentifier: MovieTVCell.defaultReuseIdentifier,
+                cellType: MovieTVCell.self
+            )
+        ) { row, movie, cell in
+            cell.set(movie: movie)
+            cell.indexPath = IndexPath(row: row, section: 0)
+            cell.set(isMovieLiked: movie.isLiked())
+            cell.likeClickDelegate = self
+        }.disposed(by: disposeBag)
         
-        loadMovies()
-    }
-    
-    private func loadMovies() {
-        self.showActivityIndicator()
-        presenter.loadMoviesRXAt(page: page).drive(onNext: { [unowned self] result in
-            self.hideActivityIndicator()
-            switch result {
-            case .success(let tmdbResult):
-                self.movies += tmdbResult.results
-                self.maxResult = tmdbResult.total_results ?? -1
-                self.tableView.reloadData()
-            case .error(let error):
-                self.showError(message: error.localizedDescription)
-            }
+        rx.sentMessage(#selector(UIViewController.viewDidAppear(_:)))
+            .map { _ in () }
+            .bind(to: paginationModel.refreshTrigger)
+            .disposed(by: disposeBag)
+        
+        tableView.rx_reachedBottom
+            .map{ _ in ()}
+            .bind(to: paginationModel.loadNextPageTrigger)
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected.bind() { [unowned self] indexPath in
+            self.tableView.deselectRow(at: indexPath, animated: true)
+        }.disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(Movie.self).subscribe(onNext: { [unowned self] movie in
+            self.routeToDetailPage(movie: movie)
         }).disposed(by: disposeBag)
-    }
-}
-
-extension PopularMoviesViewController: PopularMoviesViewInput {
-    func set(maxResult: Int) {
-        self.maxResult = maxResult
-    }
-    
-    func set(movies: [Movie]) {
-        spinnerFooterView.hideSpinner()
-        self.movies = movies
-        self.tableView.reloadData()
-    }
-    
-    func handledError() {
-        spinnerFooterView.showNoConnectionLabel()
-    }
-    
-    func reloadTableView(at indexPath: IndexPath) {
-        tableView.reloadRows(at: [indexPath], with: .none)
     }
 }
 
@@ -86,7 +76,7 @@ extension PopularMoviesViewController {
 
 extension PopularMoviesViewController: LikeClickDelegate {
     func likeClicked(at indexPath: IndexPath) {
-        presenter.likeButtonClicked(at: indexPath)
+//        presenter.likeButtonClicked(at: indexPath)
     }
 }
 
@@ -94,40 +84,6 @@ extension PopularMoviesViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text, !searchText.isEmpty else { return }
         routeToSearchPage(query: searchText)
-    }
-}
-
-extension PopularMoviesViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: MovieTVCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-        let movie = movies[indexPath.row]
-        cell.set(movie: movie)
-        cell.indexPath = indexPath
-        cell.set(isMovieLiked: movie.isLiked())
-        cell.likeClickDelegate = self
-        return cell
-    }
-}
-
-extension PopularMoviesViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == movies.count - 1 && maxResult != -1 && maxResult != movies.count {
-            spinnerFooterView.showSpinner()
-            page += 1
-            // without rx
-            //presenter.loadMoviesAt(page: page)
-            loadMovies()
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        routeToDetailPage(movie: movies[indexPath.row])
     }
 }
 
@@ -165,8 +121,6 @@ extension PopularMoviesViewController: ViewInstallationProtocol {
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = spinnerFooterView
-        tableView.delegate = self
-        tableView.dataSource = self
         tableView.register(MovieTVCell.self)
     }
 }

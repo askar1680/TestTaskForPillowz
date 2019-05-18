@@ -48,6 +48,6 @@ class MovieDetailPresenter: MovieDetailPresenterInput {
     
     private func createMovieDetailObservable(id: Int) -> Observable<MovieDetail> {
         let networkContext = MovieDetailNetworkContext(id: id)
-        return networkService.executeAsObservable(networkContext)
+        return networkService.executeAsObservable(networkContext, type: MovieDetail.self)
     }
 }

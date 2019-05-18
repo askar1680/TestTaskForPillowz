@@ -52,7 +52,7 @@ class NetworkAdapter: NetworkService {
         }
     }
     
-    func executeAsObservable<T: Decodable>(_ context: NetworkContext) -> Observable<T> {
+    func executeAsObservable<T: Decodable>(_ context: NetworkContext, type: T.Type) -> Observable<T> {
         return Observable.create { [weak self] (observer) -> Disposable in
             let completion: (Result<T>) -> Void = { result in
                 switch result {
